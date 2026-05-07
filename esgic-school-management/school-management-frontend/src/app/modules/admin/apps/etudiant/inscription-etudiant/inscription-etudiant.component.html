@@ -1,0 +1,160 @@
+<fuse-loading-bar [autoMode]="showLoading"></fuse-loading-bar>
+<div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0">
+    <div class="md:flex md:items-center md:justify-end w-full sm:w-auto md:h-full md:w-1/2 py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card">
+        <div class="w-full max-w-180 sm:w-180 mx-auto sm:mx-0">
+            <!-- Logo -->
+            <div>
+                <div class="logo">
+                    <img height="192" src="assets/images/logos/amasem.png" width="204">
+                </div>
+
+                <!-- Title -->
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight" style="text-align: center">
+                    Inscription
+                </div>
+
+                <a [routerLink]="['/sign-in']" class="ml-1 text-primary-500 hover:underline">Se connecter</a>
+            </div>
+
+            <!-- Alert -->
+            <fuse-alert
+                *ngIf="showAlert"
+                [@shake]="alert.type === 'error'"
+                [appearance]="'outline'"
+                [showIcon]="true"
+                [type]="alert.type"
+                class="mt-8">
+                {{ alert.message }}
+            </fuse-alert>
+
+            <!-- Sign Up form -->
+            <form #signUpNgForm="ngForm" [formGroup]="signUpForm" class="mt-8">
+                <div class="w-full sm:flex sm:space-x-4 space-y-4 sm:space-y-0">
+                    <!-- Name field -->
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Nom</mat-label>
+                        <input formControlName="nom" id="nom" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Prénom</mat-label>
+                        <input formControlName="prenom" id="prenom" matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full sm:flex sm:space-x-4 space-y-4 sm:space-y-0 mt-4">
+                    <!-- Phone and Email fields -->
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Téléphone</mat-label>
+                        <input formControlName="telephone" id="telephone" matInput required>
+                        <mat-error *ngIf="signUpForm.get('telephone').hasError('required')">
+                            Numéro du Mali requis
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Email</mat-label>
+                        <input formControlName="email" id="email" matInput>
+                        <mat-error *ngIf="signUpForm.get('email').hasError('email')">
+                            Email invalide
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full sm:flex sm:space-x-4 space-y-4 sm:space-y-0 mt-4">
+                    <!-- Date and Place of Birth -->
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Date de naissance</mat-label>
+                        <input formControlName="dateNaissance" id="dateNaissance" matInput [matDatepicker]="picker" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Lieu de naissance</mat-label>
+                        <input formControlName="lieuNaissance" id="lieuNaissance" matInput>
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full sm:flex sm:space-x-4 space-y-4 sm:space-y-0 mt-4">
+                    <!-- Country and Type Inscription -->
+                    <mat-select-country [value]="country"
+                                        appearance="fill"
+                                        class="w-full sm:w-1/2"
+                                        error="Champs obligatoire"
+                                        formControlName="paysResidence"
+                                        label="Pays de résidence"
+                                        required="true">
+                    </mat-select-country>
+
+                    <mat-form-field class="w-full sm:w-1/2">
+                        <mat-label>Type d'inscription</mat-label>
+                        <mat-select formControlName="typeInscription" required>
+                            <mat-option value="PHYSIQUE">PHYSIQUE</mat-option>
+                            <mat-option value="EN_LIGNE">EN LIGNE</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="w-full sm:flex sm:space-x-4 space-y-4 sm:space-y-0 mt-4">
+                    <!-- Filiere and Niveau -->
+                    <app-select-commune [label]="'Filière'" [apparence]="'fill'" [specs]="filieres" class="w-full sm:w-1/2" formControlName="filiere"></app-select-commune>
+                    <app-select-gravite [label]="'Niveaux d\'étude'" [apparence]="'fill'" [specs]="niveaux" class="w-full sm:w-1/2" formControlName="niveau"></app-select-gravite>
+                </div>
+
+                <mat-form-field class="w-full mt-4">
+                    <mat-label>Adresse</mat-label>
+                    <input formControlName="adresse" id="adresse" matInput>
+                </mat-form-field>
+
+                <button
+                    (click)="signUp()"
+                    [disabled]="signUpForm.invalid"
+                    class="w-full py-3 base-bg-color text-white font-bold rounded-lg hover:base-bg-color mt-4"
+                    mat-flat-button
+                    type="submit">
+                    <span class="white-text">S'inscrire</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="relative hidden md:flex flex-auto items-center justify-center w-1/2 h-full p-16 lg:px-25 overflow-hidden bg-gray-800 dark:border-l">
+        <!-- Background -->
+        <svg class="absolute inset-0 pointer-events-none"
+             height="100%" preserveAspectRatio="xMidYMax slice" viewBox="0 0 960 540" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+                <circle cx="196" cy="23" r="234"></circle>
+                <circle cx="790" cy="491" r="234"></circle>
+            </g>
+        </svg>
+        <svg class="absolute -top-16 -right-16 text-gray-700"
+             fill="none" height="192" viewBox="0 0 220 192" width="220">
+            <defs>
+                <pattern height="20" id="837c3e70-6c3a-44e6-8854-cc48c737b659" patternUnits="userSpaceOnUse" width="20" x="0" y="0">
+                    <rect fill="currentColor" height="4" width="4" x="0" y="0"></rect>
+                </pattern>
+            </defs>
+            <rect fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" height="192" width="220"></rect>
+        </svg>
+        <!-- Content -->
+        <div class="z-10 relative w-full max-w-2xl">
+            <div class="text-7xl font-bold leading-none text-gray-100">
+                Bienvenue à l'IUG !
+            </div>
+            <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
+                Rejoignez l'aventure de l'Institut Universitaire de Gestion ! Inscrivez-vous pour faire partie d'une communauté dynamique, prête à façonner l'avenir avec audace et créativité.
+            </div>
+            <div class="flex items-center mt-8">
+                <div class="flex flex-0 items-center -space-x-1.5">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover" src="assets/images/logos/amasem.png">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover" src="assets/images/logos/amasem.png">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover" src="assets/images/logos/amasem.png">
+                    <img class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover" src="assets/images/logos/amasem.png">
+                </div>
+                <div class="ml-4 font-medium tracking-tight text-gray-400">
+                    Des milliers d'étudiants ont déjà rejoint l'IUG. À vous de jouer !
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

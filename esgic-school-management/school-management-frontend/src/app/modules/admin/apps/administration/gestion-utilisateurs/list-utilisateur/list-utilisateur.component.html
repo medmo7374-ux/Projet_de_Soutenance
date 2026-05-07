@@ -1,0 +1,128 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+    <!-- Header -->
+    <div
+        class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+        <div class="truncate flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none"
+             style="display: flex; align-items: center">
+            <button>
+                <mat-icon (click)="goBack()" class="icon-size-10 icon" svgIcon="mat_solid:arrow_back"></mat-icon>
+            </button>
+            <div class="text-4xl font-extrabold tracking-tight truncate-title">
+                Liste des Utilisateurs
+            </div>
+        </div>
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <mat-form-field [subscriptSizing]="'dynamic'" class="fuse-mat-dense fuse-mat-rounded min-w-64">
+                <mat-icon [svgIcon]="'heroicons_solid:magnifying-glass'" class="icon-size-5" matPrefix></mat-icon>
+                <input (keyup)="onSearch()" [autocomplete]="'on'" [formControl]="searchInputControl" [placeholder]="'Rechercher des utilisateurs'"
+                       matInput>
+            </mat-form-field>
+            @if (Helpers.hasRoles(['ADMINISTRATEUR', 'USER'])) {
+                <button
+                    class="ml-4 mr-4"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [routerLink]="['./', 'save']"
+                >
+                    <span class="ml-2  mr-2">Ajouter</span>
+                </button>
+            }
+
+        </div>
+    </div>
+    <!-- Skeleton Loader -->
+    <div *ngIf="isLoading; else content" class="example-container">
+        <div class="skeleton-loader">
+            <div class="skeleton-header"></div>
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+        </div>
+    </div>
+
+    <ng-template #content>
+        <div *ngIf="users.length > 0" class="table-container">
+            <cdk-virtual-scroll-viewport class="viewport" itemSize="48">
+                <table [dataSource]="users" mat-table matSort>
+
+                    <!-- Nom Column -->
+                    <ng-container matColumnDef="prenom">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header> Prénom</th>
+                        <td *matCellDef="let element" mat-cell> {{ element?.prenom }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="nom">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header> Nom</th>
+                        <td *matCellDef="let element" mat-cell> {{ element?.nom }}</td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="username">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header> Nom d'utilisateur</th>
+                        <td *matCellDef="let element" mat-cell> {{ element?.username }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="email">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header> Email</th>
+                        <td *matCellDef="let element" class="no-wrap" mat-cell> {{ element?.email }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="telephone">
+                        <th *matHeaderCellDef mat-header-cell mat-sort-header> Téléphone</th>
+                        <td *matCellDef="let element" class="no-wrap" mat-cell> {{ element?.telephone }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th *matHeaderCellDef mat-header-cell> Actions</th>
+                        <td *matCellDef="let element" mat-cell>
+                            <button  [matMenuTriggerFor]="menu"
+                                    mat-icon-button>
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button [routerLink]="[element.id, 'update']"
+                                        mat-menu-item>
+                                    <mat-icon color="accent">edit</mat-icon>
+                                    <span>Modifier</span>
+                                </button>
+
+                                <button (click)="openResetPasswordDialog(element.id)"
+                                        mat-menu-item>
+                                    <mat-icon color="primary">key</mat-icon>
+                                    <span>Changer mot de passe</span>
+                                </button>
+                                <button (click)="deleteUtilisateur(element.id)"
+                                        mat-menu-item>
+                                    <mat-icon color="warn">delete</mat-icon>
+                                    <span>Supprimer</span>
+                                </button>
+
+                            </mat-menu>
+                        </td>
+                    </ng-container>
+                    <tr *matHeaderRowDef="displayedColumns" class="table-header-fixed bg-gray-50 dark:bg-black dark:bg-opacity-5 mat-elevation-z1"
+                        mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                </table>
+            </cdk-virtual-scroll-viewport>
+        </div>
+        <div *ngIf="users.length>0" class="pagination">
+            <mat-paginator (page)="handlePageEvent($event)"
+                           [length]="initialDataSource.totalElements"
+                           [pageIndex]="currentPage"
+                           [pageSizeOptions]="[5, 10, 25, 100]"
+                           [pageSize]="pageSize"
+                           [showFirstLastButtons]="true"
+                           class="sm:bottom-0 border-b sm:border-t sm:border-b-0 bg-gray-50 dark:bg-transparent">
+            </mat-paginator>
+        </div>
+    </ng-template>
+
+    <ng-container *ngIf="users.length <= 0 && !isLoading">
+        <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">
+            Aucun utilisateur trouvé!
+        </div>
+    </ng-container>
+</div>

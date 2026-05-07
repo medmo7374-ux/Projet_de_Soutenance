@@ -1,0 +1,7 @@
+.members-grid {
+    grid-template-columns: 1fr 2fr 1fr;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr; // Une seule colonne sur les petits écrans
+    }
+}

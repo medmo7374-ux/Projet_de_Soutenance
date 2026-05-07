@@ -1,0 +1,130 @@
+<fuse-loading-bar [autoMode]="showLoading"></fuse-loading-bar>
+<div class="flex flex-col min-w-0 min-h-screen bg-gray-100 dark:bg-gray-900 w-full max-w-full" >
+    <!-- Header -->
+    <div class="relative w-full py-8 px-4 sm:px-12 md:px-16 bg-white dark:bg-gray-800 shadow-md">
+        <div class="relative z-10 flex flex-col items-center text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                Détails de l'Inscription
+            </h1>
+        </div>
+    </div>
+
+    <!-- Alert -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
+        <fuse-alert
+            *ngIf="showAlert"
+            [@shake]="alert.type === 'error'"
+            [appearance]="'outline'"
+            [showIcon]="true"
+            [type]="alert.type"
+            class="mt-6">
+            {{ alert.message }}
+        </fuse-alert>
+    </div>
+
+    <!-- Inscription Details -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-8">
+        <div *ngIf="inscription; else noData" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">ID</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription.id }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Étudiant</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription.etudiant.prenom }} {{ inscription.etudiant.nom }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Date d'inscription</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription.dateInscription | date:'mediumDate' }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Type d'inscription</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription.typeInscription }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Statut</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                              [ngClass]="{
+                                'bg-green-100 text-green-800': inscription?.statutInscription === 'VALIDER',
+                                'bg-red-100 text-red-800': inscription?.statutInscription === 'ANNULER',
+                                'bg-yellow-100 text-yellow-800': inscription?.statutInscription === 'EN_ATTENTE'
+                              }">
+                            {{ inscription?.statutInscription }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Filière</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription?.etudiant?.filiere?.nom || 'N/A' }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Niveau</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription?.etudiant.niveau?.libelle || 'N/A' }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription?.etudiant.email }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Téléphone</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription?.etudiant.telephone }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Adresse</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription?.etudiant.adresse }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Date de naissance</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription?.etudiant.dateNaissance | date:'mediumDate' }}</p>
+                </div>
+            </div>
+            <div class="card bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
+                <div class="p-6">
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Lieu de naissance</label>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white">{{ inscription.etudiant.lieuNaissance }}</p>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #noData>
+            <div class="flex flex-col items-center justify-center py-12">
+                <mat-icon class="text-gray-400 text-6xl" svgIcon="heroicons_outline:exclamation-circle"></mat-icon>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mt-4">Aucune inscription disponible.</p>
+            </div>
+        </ng-template>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 pb-8">
+        <div class="flex justify-center space-x-4">
+            <button
+                [routerLink]="['/apps/inscriptions']"
+                class="py-3 px-6 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors duration-300">
+                Retour à la liste
+            </button>
+        </div>
+    </div>
+</div>

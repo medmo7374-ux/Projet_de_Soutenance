@@ -1,0 +1,128 @@
+<div class="flex flex-col flex-auto items-center sm:justify-center min-w-0 md:p-8">
+    <div class="flex md:w-full md:max-w-6xl sm:rounded-2xl sm:shadow overflow-hidden sm:bg-card">
+        <div class="w-full sm:w-auto py-8 px-4 sm:p-12 md:p-16">
+            <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+
+                <!-- Title -->
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Détails du Signalement</div>
+                <div class="flex items-baseline mt-0.5 font-medium">
+                    <div>Signalement ID: {{ signalement?.id }}</div>
+                </div>
+
+                <!-- Alert -->
+                <fuse-alert
+                    *ngIf="showAlert"
+                    [@shake]="alert.type === 'error'"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    class="mt-8 -mb-4">
+                    {{ alert.message }}
+                </fuse-alert>
+
+                <!-- Signalement details -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Nom -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Nom</mat-label>
+                        <input [value]="signalement?.nom" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Prénom -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Prénom</mat-label>
+                        <input [value]="signalement?.prenom" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Adresse -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Adresse</mat-label>
+                        <input [value]="signalement?.adresse" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Téléphone -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Téléphone</mat-label>
+                        <input [value]="signalement?.telephone" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Description -->
+                    <mat-form-field class="w-full col-span-2">
+                        <mat-label>Description</mat-label>
+                        <textarea [value]="signalement?.description" matInput readonly rows="3"></textarea>
+                    </mat-form-field>
+
+                    <!-- Date -->
+                    <mat-form-field class="w-full col-span-2">
+                        <mat-label>Date</mat-label>
+                        <input [value]="signalement?.date | date:'short'" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Commune -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Commune</mat-label>
+                        <input [value]="signalement?.commune?.nom" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Quartier -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Quartier</mat-label>
+                        <input [value]="signalement?.quartier?.nom" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Gravité -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Gravité</mat-label>
+                        <input [value]="signalement?.gravite?.libelle" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Statut -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Statut</mat-label>
+                        <input [value]="signalement?.statut?.libelle" matInput readonly>
+                    </mat-form-field>
+
+                    <!-- Back button -->
+                    <button
+                        (click)="goBack()"
+                        [color]="'primary'"
+                        class="fuse-mat-button-large w-full mt-6 col-span-2"
+                        mat-flat-button>
+                        Retour
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div
+            class="relative hidden md:flex flex-auto items-center justify-center h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-l">
+            <!-- Background -->
+            <svg class="absolute inset-0 pointer-events-none"
+                 height="100%" preserveAspectRatio="xMidYMax slice" viewBox="0 0 960 540" width="100%" xmlns="http://www.w3.org/2000/svg">
+                <g class="text-gray-700 opacity-25" fill="none" stroke="currentColor" stroke-width="100">
+                    <circle cx="196" cy="23" r="234"></circle>
+                    <circle cx="790" cy="491" r="234"></circle>
+                </g>
+            </svg>
+            <!-- Dots -->
+            <svg class="absolute -top-16 -right-16 text-gray-700"
+                 fill="none" height="192" viewBox="0 0 220 192" width="220">
+                <defs>
+                    <pattern height="20" id="837c3e70-6c3a-44e6-8854-cc48c737b659" patternUnits="userSpaceOnUse" width="20" x="0" y="0">
+                        <rect fill="currentColor" height="4" width="4" x="0" y="0"></rect>
+                    </pattern>
+                </defs>
+                <rect fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)" height="192" width="220"></rect>
+            </svg>
+            <!-- Content -->
+            <div class="z-10 relative w-full max-w-2xl">
+                <div class="text-7xl font-bold leading-none text-gray-100">
+                    <div>Bienvenue sur</div>
+                    <div>Aqua Sentry</div>
+                </div>
+                <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
+                    Aqua Sentry permet aux citoyens maliens de signaler rapidement et facilement les fuites d'eau à la SOMAGEP S.A. Contribuez à la préservation de l'eau en signalant une fuite dès aujourd'hui !
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

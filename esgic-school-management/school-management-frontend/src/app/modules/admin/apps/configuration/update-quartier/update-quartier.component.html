@@ -1,0 +1,30 @@
+<div class="max-w-3xl">
+    <form #specForm="ngForm" (ngSubmit)="updateQuartier(specForm)" class="p-4 bg-card overflow-hidden">
+        <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3">
+                <mat-label>Nom du quartier</mat-label>
+                <textarea
+                    [(ngModel)]="data.quartier.nom"
+                    [readonly]="!isEditing"
+                    class="w-full"
+                    matInput
+                    name="nom"
+                    placeholder="Nom"
+                    required
+                    rows="3"></textarea>
+                <mat-icon
+                    [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
+                    class="icon-size-5"
+                    matPrefix></mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="flex justify-end mt-8">
+            <button (click)="toggleEdit()" *ngIf="!isEditing" class="px-8 mr-2" color="accent" mat-flat-button
+                    type="button">Modifier
+            </button>
+            <button *ngIf="isEditing" [disabled]="specForm.invalid" class="px-8 mr-2" color="accent" mat-flat-button
+                    type="submit">Sauvegarder
+            </button>
+        </div>
+    </form>
+</div>

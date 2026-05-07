@@ -1,0 +1,18 @@
+<mat-dialog-content class="dialog-content">
+    <div [ngClass]="{ 'success': data.isSuccess, 'failure': !data.isSuccess }" class="icon-container">
+        <ng-container *ngIf="data.isSuccess; else failureIcon">
+            <div class="icon success-icon">
+                <mat-icon>check_circle</mat-icon>
+            </div>
+        </ng-container>
+        <ng-template #failureIcon>
+            <div class="icon failure-icon">
+                <mat-icon>cancel</mat-icon>
+            </div>
+        </ng-template>
+    </div>
+    <div class="message">{{ data.message }}</div>
+</mat-dialog-content>
+<mat-dialog-actions class="dialog-actions">
+    <button (click)="closeDialog()" class="close-button" mat-stroked-button>Fermer</button>
+</mat-dialog-actions>

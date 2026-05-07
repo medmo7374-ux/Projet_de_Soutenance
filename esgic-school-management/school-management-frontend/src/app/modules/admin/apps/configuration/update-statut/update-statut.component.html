@@ -1,0 +1,33 @@
+<div class="max-w-3xl">
+    <form #specForm="ngForm" (ngSubmit)="updateStatut(specForm)" class="p-4 bg-card overflow-hidden">
+        <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3">
+                <mat-label>Libellé du statut</mat-label>
+                <textarea
+                    [(ngModel)]="data.statut.libelle"
+                    [readonly]="!isEditing"
+                    class="w-full"
+                    matInput
+                    name="libelle"
+                    placeholder="Libellé"
+                    required
+                    rows="3"></textarea>
+                <mat-icon
+                    [svgIcon]="'heroicons_solid:bars-3-bottom-left'"
+                    class="icon-size-5"
+                    matPrefix></mat-icon>
+                <mat-error *ngIf="specForm.controls.libelle?.invalid && specForm.controls.libelle?.touched">
+                    Le libellé du statut est requis.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex justify-end mt-8">
+            <button (click)="toggleEdit()" *ngIf="!isEditing" class="px-8 mr-2" color="accent" mat-flat-button
+                    type="button">Modifier
+            </button>
+            <button *ngIf="isEditing" [disabled]="specForm.invalid" class="px-8 mr-2" color="accent" mat-flat-button
+                    type="submit">Sauvegarder
+            </button>
+        </div>
+    </form>
+</div>

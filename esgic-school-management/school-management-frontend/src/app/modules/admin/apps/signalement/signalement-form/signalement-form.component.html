@@ -1,0 +1,185 @@
+<div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+    <!-- Onboarding -->
+    <div *ngIf="step === 'onboarding'" class="w-full px-4 sm:px-6 lg:px-8">
+        <swiper
+            [slidesPerView]="1"
+            [spaceBetween]="0"
+            [autoplay]="{ delay: 5000, disableOnInteraction: false }"
+            [loop]="true"
+            [navigation]="true"
+            [pagination]="{ clickable: true }"
+            class="w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-lg"
+        >
+            <ng-template swiperSlide *ngFor="let slide of slides; let i = index">
+                <div class="flex flex-row items-center h-full bg-white dark:bg-gray-800 p-4 sm:p-6">
+                    <video
+                        class="w-1/2 h-48 sm:h-64 object-cover rounded-lg"
+                        [src]="slide.video"
+                        autoplay
+                        loop
+                        muted
+                        playsinline
+                        aria-label="Vidéo: {{ slide.title }}"
+                    ></video>
+                    <div class="w-1/2 pl-4 sm:pl-6 flex flex-col items-start">
+                        <img [src]="slide.logo" alt="Logo SOMAGEP S.A." class="h-12 mb-4" />
+                        <h2 class="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-200">{{ slide.title }}</h2>
+                        <p class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300">{{ slide.description }}</p>
+                        <button
+                            (click)="goToForm()"
+                            mat-flat-button
+                            class="mt-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base px-4 py-2"
+                            aria-label="Aller au formulaire de signalement"
+                        >
+                            Signaler une fuite
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
+        </swiper>
+    </div>
+
+    <!-- Formulaire -->
+    <div *ngIf="step === 'form'" class="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div class="w-full max-w-4xl mx-auto rounded-xl shadow-lg overflow-hidden bg-white dark:bg-gray-800">
+            <div class="flex flex-col lg:flex-row">
+                <!-- Form Section -->
+                <div class="w-full lg:w-1/2 p-4 sm:p-6 lg:p-8">
+                    <div class="w-full max-w-md mx-auto">
+                        <img src="assets/images/somagep-logo.svg" alt="Logo SOMAGEP S.A." class="h-10 mb-4" />
+                        <h1 class="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-200">Déclaration de Fuite</h1>
+                        <p class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300">Signalez une fuite d’eau pour aider SOMAGEP S.A.</p>
+
+                        <fuse-alert
+                            *ngIf="showAlert"
+                            [@shake]="alert.type === 'error'"
+                            [appearance]="'outline'"
+                            [showIcon]="false"
+                            [type]="alert.type"
+                            class="mt-4 -mb-2"
+                            role="alert"
+                            [attr.aria-live]="alert.type === 'error' ? 'assertive' : 'polite'"
+                        >
+                            {{ alert.message }}
+                        </fuse-alert>
+
+                        <form
+                            #signalementNgForm="ngForm"
+                            [formGroup]="signalementForm"
+                            class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4"
+                            role="form"
+                            aria-labelledby="form-title"
+                        >
+                            <mat-form-field class="w-full">
+                                <mat-label>Nom</mat-label>
+                                <input [formControlName]="'nom'" id="nom" matInput aria-describedby="nom-error" required>
+                                <mat-error *ngIf="signalementForm.get('nom')?.hasError('required')" id="nom-error">
+                                    Le nom est requis
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="w-full">
+                                <mat-label>Prénom</mat-label>
+                                <input [formControlName]="'prenom'" id="prenom" matInput aria-describedby="prenom-error" required>
+                                <mat-error *ngIf="signalementForm.get('prenom')?.hasError('required')" id="prenom-error">
+                                    Le prénom est requis
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full">
+                                <mat-label>Adresse</mat-label>
+                                <input [formControlName]="'adresse'" id="adresse" matInput aria-describedby="adresse-error" required>
+                                <mat-error *ngIf="signalementForm.get('adresse')?.hasError('required')" id="adresse-error">
+                                    L'adresse est requise
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="w-full">
+                                <mat-label>Téléphone</mat-label>
+                                <input [formControlName]="'telephone'" id="telephone" matInput aria-describedby="telephone-error" required>
+                                <mat-error *ngIf="signalementForm.get('telephone')?.hasError('required')" id="telephone-error">
+                                    Le numéro est requis
+                                </mat-error>
+                                <mat-error *ngIf="signalementForm.get('telephone')?.hasError('pattern')">
+                                    Numéro invalide
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="w-full col-span-1 sm:col-span-2">
+                                <mat-label>Date</mat-label>
+                                <input [formControlName]="'date'" id="date" matInput [matDatepicker]="picker" aria-describedby="date-error" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error *ngIf="signalementForm.get('date')?.hasError('required')" id="date-error">
+                                    La date est requise
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="w-full col-span-1 sm:col-span-2">
+                                <mat-label>Description</mat-label>
+                                <textarea [formControlName]="'description'" id="description" matInput rows="3" aria-describedby="description-error" required></textarea>
+                                <mat-error *ngIf="signalementForm.get('description')?.hasError('required')" id="description-error">
+                                    La description est requise
+                                </mat-error>
+                            </mat-form-field>
+
+                            <app-select-filiere
+                                [formControlName]="'filiere'"
+                                [specs]="communes"
+                                [appearance]="'outline'"
+                                label="Commune"
+                                placeholder="Sélectionnez une filiere"
+                                class="w-full"
+                                aria-describedby="filiere-error"
+                                required
+                            ></app-select-filiere>
+                            <app-select-quartier
+                                [formControlName]="'quartier'"
+                                [specs]="quartiers"
+                                [appearance]="'outline'"
+                                label="Quartier"
+                                placeholder="Sélectionnez un quartier"
+                                class="w-full"
+                                aria-describedby="quartier-error"
+                                required
+                            ></app-select-quartier>
+                            <app-select-niveau
+                                [formControlName]="'niveau'"
+                                [specs]="gravites"
+                                [appearance]="'outline'"
+                                label="Gravité"
+                                placeholder="Sélectionnez une gravité"
+                                class="w-full col-span-1 sm:col-span-2"
+                                aria-describedby="niveau-error"
+                                required
+                            ></app-select-niveau>
+
+                            <button
+                                (click)="submitSignalement()"
+                                [disabled]="signalementForm.invalid || signalementForm.disabled"
+                                mat-flat-button
+                                class="w-full mt-4 col-span-1 sm:col-span-2 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base py-2"
+                                aria-label="Soumettre le signalement"
+                            >
+                                <span *ngIf="!signalementForm.disabled">Signaler</span>
+                                <mat-progress-spinner
+                                    *ngIf="signalementForm.disabled"
+                                    [diameter]="20"
+                                    [mode]="'indeterminate'"
+                                ></mat-progress-spinner>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Section -->
+                <div class="w-full lg:w-1/2 p-4 sm:p-6 lg:p-8 bg-blue-900 dark:bg-blue-950 text-white flex items-center justify-center">
+                    <div class="w-full max-w-md text-center">
+                        <img src="assets/images/somagep-logo.svg" alt="Logo SOMAGEP S.A." class="h-16 mx-auto mb-4" />
+                        <h2 class="text-2xl sm:text-3xl font-bold">SOMAGEP S.A.</h2>
+                        <p class="mt-2 text-sm sm:text-base">
+                            Votre partenaire pour une gestion durable de l’eau au Mali. Signalez les fuites pour préserver nos ressources !
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

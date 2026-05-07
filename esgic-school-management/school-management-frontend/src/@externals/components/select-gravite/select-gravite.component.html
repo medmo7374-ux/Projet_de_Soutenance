@@ -1,0 +1,20 @@
+<mat-form-field [appearance]="apparence">
+    <mat-label>{{ label }}</mat-label>
+
+    <input #inputSpec
+           (focus)="filterSpecs()"
+           (input)="filterSpecs()"
+           [matAutocomplete]="autospec"
+           [placeholder]="placeholder"
+           matInput
+           type="text">
+    <button (click)="$event.stopPropagation();openSaveSpecDialog()" type="button" mat-icon-button matSuffix>
+        <mat-icon>add</mat-icon>
+    </button>
+    <mat-autocomplete #autospec="matAutocomplete" (optionSelected)="onSpecSelected($event)" [displayWith]="displayFn"
+                      requireSelection>
+        @for (option of filteredSpecs; track option) {
+            <mat-option [value]="option">{{ option?.libelle }}</mat-option>
+        }
+    </mat-autocomplete>
+</mat-form-field>

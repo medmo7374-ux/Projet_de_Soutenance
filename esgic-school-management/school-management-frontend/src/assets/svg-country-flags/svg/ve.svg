@@ -1,0 +1,27 @@
+<svg id="flag-icons-ve" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <g id="ve-d" transform="translate(0 -36)">
+            <g id="ve-c">
+                <g id="ve-b">
+                    <path d="M0-5-1.5-.2l2.8.9z" fill="#fff" id="ve-a"/>
+                    <use height="120" transform="scale(-1 1)" width="180" xlink:href="#ve-a"/>
+                </g>
+                <use height="120" transform="rotate(72)" width="180" xlink:href="#ve-b"/>
+            </g>
+            <use height="120" transform="rotate(-72)" width="180" xlink:href="#ve-b"/>
+            <use height="120" transform="rotate(144)" width="180" xlink:href="#ve-c"/>
+        </g>
+    </defs>
+    <path d="M0 0h512v512H0z" fill="#cf142b"/>
+    <path d="M0 0h512v341.3H0z" fill="#00247d"/>
+    <path d="M0 0h512v170.7H0z" fill="#fc0"/>
+    <g id="ve-f" transform="translate(256.3 358.4)scale(4.265)">
+        <g id="ve-e">
+            <use height="120" transform="rotate(10)" width="180" xlink:href="#ve-d"/>
+            <use height="120" transform="rotate(30)" width="180" xlink:href="#ve-d"/>
+        </g>
+        <use height="120" transform="rotate(40)" width="180" xlink:href="#ve-e"/>
+    </g>
+    <use height="120" transform="rotate(-80 256.3 358.4)" width="180" xlink:href="#ve-f"/>
+</svg>
